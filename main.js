@@ -1,5 +1,5 @@
-// console.log(avocadoData);
-// console.log(avocadoData[0].missedIngredients);
+console.log(avocadoData);
+console.log(avocadoData[0].missedIngredients[2].name);
 
 let body = document.querySelector("body");
 body.classList.add("container-fluid");
@@ -16,6 +16,7 @@ mainContainer.classList.add("justify-content-sm-center");
 body.appendChild(mainContainer);
 
 for (i = 1; i < avocadoData.length; i++) {
+  console.log(avocadoData[i].id);
   let sectionCard = document.createElement("section");
   sectionCard.classList.add("col-md-4");
   sectionCard.style.border = "1px solid #d387ab";
@@ -46,13 +47,13 @@ for (i = 1; i < avocadoData.length; i++) {
   mainContainer.appendChild(sectionCard);
 
   let ingredientsContainer = document.createElement("div");
-  let ingredients = document.createElement("p");
+  let ingredientsList = document.createElement("ul");
 
   for (j = 0; j < avocadoData[i].missedIngredients.length; j++) {
-    let missedIngredients = [];
-    missedIngredients.push(avocadoData[i].missedIngredients[j].name);
-    ingredients.innerHTML = missedIngredients;
-    ingredientsContainer.appendChild(ingredients);
+    let eachIngredient = document.createElement("li");
+    eachIngredient.innerHTML = avocadoData[i].missedIngredients[j].name;
+    ingredientsList.appendChild(eachIngredient);
+    ingredientsContainer.appendChild(ingredientsList);
   }
 
   sectionCard.appendChild(ingredientsContainer);
