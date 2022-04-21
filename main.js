@@ -64,22 +64,6 @@ for (i = 1; i < avocadoData.length; i++) {
   ingredientsContainer.classList.add("align-self-sm-start");
   ingredientsContainer.classList.add("align-self-xxl-center");
 
-  //Tags (CHILD 3.1)
-  let tags = document.createElement("p");
-  tags.innerHTML = "Tags: ";
-
-  for (x = 0; x < recipeData.length; x++) {
-    let identifier = avocadoData[i].id;
-    if (identifier === recipeData[x].id) {
-      if (recipeData[x].vegetarian === true) {
-        tags.innerHTML += "Vegetarian";
-      } else {
-        tags.innerHTML += "N/A";
-      }
-    }
-  }
-  sectionCard.appendChild(tags);
-
   //Likes (CHILD 3.2)
   let likes = document.createElement("p");
   likes.innerHTML = avocadoData[i].likes + " Likes";
@@ -93,53 +77,42 @@ for (i = 1; i < avocadoData.length; i++) {
   //Other Ingredient List (CHILD 3.3.1)
   let ingredientsList = document.createElement("ul");
 
-  if (avocadoData[i].missedIngredients.length <= 3) {
+  if (avocadoData[i].missedIngredients.length > 3) {
+    let seeMore = document.createElement("p");
+    seeMore.classList.add("leading");
+    seeMore.innerHTML = "And more... 	&#8964;";
+    seeMore.style.opacity = "70%";
+    ingredientsList.appendChild(seeMore);
+    for (j = 0; j < avocadoData[i].missedIngredients.length; j++) {
+      if (j < 3) {
+        let eachIngredient = document.createElement("li");
+        eachIngredient.innerHTML = avocadoData[i].missedIngredients[j].name;
+        ingredientsList.appendChild(eachIngredient);
+      } else {
+        let moreThan3ing = [];
+        moreThan3ing.push(avocadoData[i].missedIngredients[j].name);
+        let hiddenSection = document.createElement("p");
+        hiddenSection.classList.add("hidden-section");
+        hiddenSection.innerHTML = moreThan3ing;
+        seeMore.appendChild(hiddenSection);
+        // hiddenSection.style.display = "none";
+
+        function expand() {
+          if (hiddenSection.classList.contains("reveal")) {
+            hiddenSection.classList.remove("reveal");
+          } else {
+            hiddenSection.classList.add("reveal");
+          }
+        }
+        seeMore.addEventListener("click", expand);
+      }
+    }
+  } else {
     for (j = 0; j < avocadoData[i].missedIngredients.length; j++) {
       let eachIngredient = document.createElement("li");
       eachIngredient.innerHTML = avocadoData[i].missedIngredients[j].name;
       ingredientsList.appendChild(eachIngredient);
     }
-  } else {
-    let moreThan3ing = [];
-    for (let b = 0; b < avocadoData[i].missedIngredients.length; b++) {
-      moreThan3ing.push(avocadoData[i].missedIngredients[b]);
-      console.log(moreThan3ing);
-    }
-    let seeMore = document.createElement("p");
-    seeMore.classList.add("leading");
-
-    seeMore.innerHTML = "And more... 	&#8964;";
-    seeMore.style.opacity = "70%";
-    ingredientsList.appendChild(seeMore);
-
-    for (a = 0; a < 3; a++) {
-      console.log(a);
-
-      let eachIngredient = document.createElement("li");
-      console.log(eachIngredient[j]);
-      eachIngredient.innerHTML = avocadoData[i].missedIngredients[j].name;
-
-      ingredientsList.appendChild(eachIngredient);
-      console.log(avocadoData[i].missedIngredients[j]);
-
-      function expand() {
-        console.log(avocadoData[i].missedIngredients.length);
-        let eachAddIngredient = document.createElement("li");
-        for (k = 0; k < avocadoData[i].missedIngredients.length; k++) {
-          console.log(avocadoData[2].missedIngredients[1]);
-          eachAddIngredient.innerHTML =
-            avocadoData[i].missedIngredients[k].name;
-          ingredientsList.appendChild(eachAddIngredient);
-        }
-      }
-      seeMore.addEventListener("click", expand);
-    }
-
-    // if (avocadoData[i].missedIngredients.length > 3) {
-
-    // }
-
-    // seeMore.addEventListener("click", expand);
   }
 
   ingredientsContainer.appendChild(ingredientsList);
@@ -155,4 +128,39 @@ for (i = 1; i < avocadoData.length; i++) {
     }
   }
   sectionCard.appendChild(instructions);
+
+  //Tags (CHILD 3.1)
+  let tags = document.createElement("p");
+  tags.innerHTML = "</br>Tags: ";
+
+  for (x = 0; x < recipeData.length; x++) {
+    let identifier = avocadoData[i].id;
+    // let strOfTags = []
+    if (identifier === recipeData[x].id) {
+      if (
+        recipeData[x].vegetarian === false &&
+        recipeData[x].vegan === false &&
+        recipeData[x].glutenFree === false &&
+        recipeData[x].dairyFree === false
+      ) {
+        tags.innerHTML += "N/A";
+      } else if (recipeData[x].vegetarian === true) {
+        tags.innerHTML +=
+          'Vegetarian <img src="https://cdn-icons.flaticon.com/png/512/3463/premium/3463358.png?token=exp=1650558165~hmac=2f8e03cd7eaf344710a7f9cdde9f7780" width="25px">';
+      }
+      if (recipeData[x].vegan === true) {
+        tags.innerHTML +=
+          'Vegan <img src="https://cdn-icons.flaticon.com/png/512/5769/premium/5769063.png?token=exp=1650558135~hmac=5bb33e6a6c8d13633f8240903c5a2b05" width="25px"> ';
+      }
+      if (recipeData[x].glutenFree === true) {
+        tags.innerHTML +=
+          'Gluten Free <img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905936.png?token=exp=1650557905~hmac=4ef73e036ef032071907bec917029dad" width="25px">  ';
+      }
+      if (recipeData[x].dairyFree === true) {
+        tags.innerHTML +=
+          'Diary Free <img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905942.png?token=exp=1650557979~hmac=5926bf662a65cfc1e66acbb0b111fd2b" width="25px">';
+      }
+    }
+  }
+  sectionCard.appendChild(tags);
 }
