@@ -12,13 +12,14 @@ nav.style.alignItems = "center";
 
 let mainContainer = document.createElement("main");
 mainContainer.classList.add("row");
-mainContainer.classList.add("justify-content-sm-center");
+// mainContainer.style.display = "flex";
+// mainContainer.style.justifyContent = "space-evenly";
 body.appendChild(mainContainer);
 
 for (i = 1; i < avocadoData.length; i++) {
-  console.log(avocadoData[i].id);
+  // console.log(avocadoData[i].id);
   let sectionCard = document.createElement("section");
-  sectionCard.classList.add("col-md-4");
+  sectionCard.classList.add("col-md-3");
   sectionCard.style.border = "1px solid #d387ab";
   sectionCard.style.borderTop = "0px";
   // if (i % 2 === 0) {
@@ -26,6 +27,8 @@ for (i = 1; i < avocadoData.length; i++) {
   // }
   sectionCard.style.display = "flex";
   sectionCard.style.flexDirection = "column";
+
+  sectionCard.style.alignItems = "center";
   sectionCard.style.justifyContent = "flex-end";
   sectionCard.style.padding = "10px";
 
@@ -47,14 +50,36 @@ for (i = 1; i < avocadoData.length; i++) {
   mainContainer.appendChild(sectionCard);
 
   let ingredientsContainer = document.createElement("div");
+  ingredientsContainer.style.alignSelf = "flex-start";
+  let likes = document.createElement("p");
+  likes.innerHTML = "<br>" + avocadoData[i].likes + " Likes";
+  ingredientsContainer.appendChild(likes);
+
+  let otheringredients = document.createElement("p");
+  otheringredients.innerHTML = "Other ingredients:";
+  ingredientsContainer.appendChild(otheringredients);
+
   let ingredientsList = document.createElement("ul");
 
-  for (j = 0; j < avocadoData[i].missedIngredients.length; j++) {
-    let eachIngredient = document.createElement("li");
-    eachIngredient.innerHTML = avocadoData[i].missedIngredients[j].name;
-    ingredientsList.appendChild(eachIngredient);
-    ingredientsContainer.appendChild(ingredientsList);
+  if (avocadoData[i].missedIngredients.length <= 3) {
+    for (j = 0; j < avocadoData[i].missedIngredients.length; j++) {
+      let eachIngredient = document.createElement("li");
+      eachIngredient.innerHTML = avocadoData[i].missedIngredients[j].name;
+      ingredientsList.appendChild(eachIngredient);
+    }
+  } else {
+    for (j = 0; j < 3; j++) {
+      let eachIngredient = document.createElement("li");
+      eachIngredient.innerHTML = avocadoData[i].missedIngredients[j].name;
+      ingredientsList.appendChild(eachIngredient);
+    }
   }
 
+  if (avocadoData[i].missedIngredients.length > 3) {
+    let seeMore = document.createElement("li");
+    seeMore.innerHTML = "See more...";
+    ingredientsList.appendChild(seeMore);
+  }
+  ingredientsContainer.appendChild(ingredientsList);
   sectionCard.appendChild(ingredientsContainer);
 }
