@@ -46,14 +46,18 @@ function createCards() {
     let likes = createLikes();
     ingredientsContainer.appendChild(likes);
 
-    //Other Ingredientss (CHILD 3.2)
+    //Other Ingredients (CHILD 3.2)
     let otherIngredientsText = createOtherIngredientsText();
     ingredientsContainer.appendChild(otherIngredientsText);
+
+    //Other Ingredient List - first 3 (CHILD 3.2.1)
+    // let first3List = createFirst3();
+    // ingredientsContainer.appendChild(first3List);
+    // sectionCard.appendChild(ingredientsContainer);
 
     //Other Ingredient List (CHILD 3.2.1)
     let ingredientsList = createIngredientsList();
     ingredientsContainer.appendChild(ingredientsList);
-    sectionCard.appendChild(ingredientsContainer);
 
     //Instructions (CHILD 3.3)
     let instructions = createInstructions();
@@ -79,7 +83,7 @@ function createSectionCard() {
   // sectionCard.style.flexDirection = "column";
   // sectionCard.style.alignItems = "center";
   // sectionCard.style.justifyContent = "flex-end";
-  // sectionCard.style.padding = "10px";
+  sectionCard.style.padding = "20px";
   return sectionCard;
 }
 
@@ -172,15 +176,25 @@ function createOtherIngredientsText() {
   return otherIngredientsText;
 }
 
+// function createFirst3() {
+//   let first3List = document.createElement("ul");
+//   for (j = 0; j < 3; j++) {
+//     let first3 = document.createElement("li");
+//     first3.innerHTML = avocadoData[i].missedIngredients[j].name;
+//     first3List.appendChild(first3);
+//   }
+//   return first3List;
+// }
+
 function createIngredientsList() {
   let ingredientsList = document.createElement("ul");
-
   if (avocadoData[i].missedIngredients.length > 3) {
-    let seeMore = document.createElement("p");
-    seeMore.classList.add("leading");
-    seeMore.innerHTML = "And more... 	&#8964;";
-    seeMore.style.opacity = "70%";
+    let seeMore = createSeeMoreText();
     ingredientsList.appendChild(seeMore);
+    // let seeMore = document.createElement("p");
+    // seeMore.classList.add("leading");
+    // seeMore.innerHTML = "And more... 	&#8964;";
+    // seeMore.style.opacity = "70%";
     for (j = 0; j < avocadoData[i].missedIngredients.length; j++) {
       if (j < 3) {
         let eachIngredient = document.createElement("li");
@@ -202,8 +216,8 @@ function createIngredientsList() {
             hiddenSection.classList.add("reveal");
           }
         }
-        seeMore.addEventListener("click", expand);
       }
+      seeMore.addEventListener("click", expand);
     }
   } else {
     for (j = 0; j < avocadoData[i].missedIngredients.length; j++) {
@@ -214,3 +228,28 @@ function createIngredientsList() {
   }
   return ingredientsList;
 }
+
+function createSeeMoreText() {
+  let seeMore = document.createElement("p");
+  seeMore.classList.add("leading");
+  seeMore.innerHTML = "And more... 	&#8964;";
+  seeMore.style.opacity = "70%";
+  return seeMore;
+}
+
+// function moreThan3() {
+//   for (j = 0; j < avocadoData[i].missedIngredients.length; j++) {
+//     if (j < 3) {
+//       let eachIngredient = document.createElement("li");
+//       eachIngredient.innerHTML = avocadoData[i].missedIngredients[j].name;
+//       // ingredientsList.appendChild(eachIngredient);
+//     } else {
+//       let moreThan3ing = [];
+//       moreThan3ing.push(avocadoData[i].missedIngredients[j].name);
+//       return moreThan3;
+//       // let hiddenSection = document.createElement("p");
+//       // hiddenSection.classList.add("hidden-section");
+//       // hiddenSection.innerHTML = moreThan3ing;
+//       // seeMore.appendChild(hiddenSection);
+//     }
+//   }
