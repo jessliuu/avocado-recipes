@@ -77,7 +77,7 @@ function createSectionCard() {
   sectionCard.classList.add("col-sm-6");
   sectionCard.style.border = "1px solid #d387ab";
   sectionCard.style.borderTop = "0px";
-  sectionCard.style.maxHeight = "40rem";
+  // sectionCard.style.maxHeight = "40rem";
   sectionCard.style.display = "grid";
   // sectionCard.style.gridTemplateRows = "1fr 2fr 2fr";
   // sectionCard.style.flexDirection = "column";
@@ -90,7 +90,18 @@ function createSectionCard() {
 function createHeader() {
   let headerContainer = document.createElement("div");
   let h5 = document.createElement("h5");
-  h5.innerHTML = avocadoData[i].title;
+  if (avocadoData[i].title.length < 35) {
+    h5.innerHTML = avocadoData[i].title;
+  } else {
+    let shortTitle = avocadoData[i].title.split(" ");
+    h5.innerHTML = shortTitle.slice(0, 8).join(" ") + "...";
+    // function showFullTitle() {
+    // shortTitle.setAttribute("data-toggle", "tooltip");
+    // shortTitle.setAttribute("data-placement", "bottom");
+    // shortTitle.innerHTML = avocadoData[i].title;
+    // }
+    // shortTitle.addEventListener("hover", showFullTitle);
+  }
   h5.style.color = "#d387ab";
   headerContainer.appendChild(h5);
   headerContainer.style.alignSelf = "center";
