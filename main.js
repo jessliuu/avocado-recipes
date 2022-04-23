@@ -61,7 +61,7 @@ function createCards() {
 
     //Instructions (CHILD 3.3)
     let instructions = createInstructions();
-    sectionCard.appendChild(instructions);
+    ingredientsContainer.appendChild(instructions);
 
     //Tags (CHILD 3.4)
     let tags = createTags();
@@ -79,14 +79,20 @@ function createSectionCard() {
   sectionCard.style.borderTop = "0px";
   // sectionCard.style.maxHeight = "40rem";
   sectionCard.style.display = "grid";
-  // sectionCard.style.gridTemplateRows = "1fr 2fr 2fr";
+  sectionCard.style.gridTemplateRows = "0.5fr 2fr 2fr 0.5fr";
   // sectionCard.style.flexDirection = "column";
   // sectionCard.style.alignItems = "center";
   // sectionCard.style.justifyContent = "flex-end";
-  sectionCard.style.padding = "20px";
+  sectionCard.style.padding = "10px";
   return sectionCard;
 }
 
+var tooltipTriggerList = [].slice.call(
+  document.querySelectorAll('[data-bs-toggle="tooltip"]')
+);
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl);
+});
 function createHeader() {
   let headerContainer = document.createElement("div");
   let h5 = document.createElement("h5");
@@ -95,12 +101,10 @@ function createHeader() {
   } else {
     let shortTitle = avocadoData[i].title.split(" ");
     h5.innerHTML = shortTitle.slice(0, 8).join(" ") + "...";
-    // function showFullTitle() {
-    // shortTitle.setAttribute("data-toggle", "tooltip");
-    // shortTitle.setAttribute("data-placement", "bottom");
-    // shortTitle.innerHTML = avocadoData[i].title;
-    // }
-    // shortTitle.addEventListener("hover", showFullTitle);
+    h5.setAttribute("data-bs-toggle", "tooltip");
+    h5.setAttribute("data-bs-placement", "bottom");
+    h5.setAttribute("title", avocadoData[i].title);
+    $(h5).tooltip();
   }
   h5.style.color = "#d387ab";
   headerContainer.appendChild(h5);
