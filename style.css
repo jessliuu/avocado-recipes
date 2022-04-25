@@ -1,3 +1,8 @@
+* {
+  font-family: Avenir Book;
+  /* color: #d387ab; */
+}
+
 .hidden-section {
   display: none;
 }
