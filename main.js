@@ -1,11 +1,43 @@
-console.log(avocadoData);
-console.log(recipeData);
-console.log(avocadoData[2].id);
-console.log(recipeData[1].id);
+// console.log(recipeData);
+// console.log(avocadoData[2].id);
+// console.log(recipeData[1].id);
 
-if (avocadoData[2].id === recipeData[1].id) {
-  console.log(avocadoData[2].id);
-}
+// if (avocadoData[2].id === recipeData[1].id) {
+//   console.log(avocadoData[2].id);
+// }
+
+const url1 =
+  "https://api.spoonacular.com/recipes/findByIngredients?apiKey=5bb2ba85e71141829b3107f5df442fce&ingredients=avocado&number=100";
+const url2 =
+  "https://api.spoonacular.com/recipes/informationBulk?apiKey=5bb2ba85e71141829b3107f5df442fce&ids=633165%2C%20634048%2C%20648439%2C%201697397%2C%201512847%2C%20715543%2C%20633144%2C%20633160%2C%20650751%2C%20664997%2C%20633157%2C%20649335%2C%20664394%2C%20643455%2C%20633123%2C%20660108%2C%20715521%2C%20780000%2C%20640062%2C%20633132%2C%20645479%2C%20800754%2C%20640959%2C%20650789%2C%20654430%2C%20633120%2C%20633264%2C%20642780%2C%20633141%2C%20650471%2C%20673436%2C%20645988%2C%20663054%2C%201160166%2C%20633126%2C%20632788%2C%20633133%2C%20637999%2C%20643428%2C%20650860%2C%20633117%2C%20633119%2C%20637480%2C%20647608%2C%20650809%2C%20646632%2C%20655785%2C%20665178%2C%20715544%2C%20716437%2C%20633139%2C%20662670%2C%20644593%2C%20658495%2C%20651707%2C%20636676%2C%20643861%2C%20982371%2C%20638593%2C%20645687%2C%20656519%2C%20661431%2C%20635074%2C%20661188%2C%20638741%2C%20640311%2C%20157344%2C%20660024%2C%20661126%2C%20642395%2C%20649343%2C%20657679%2C%201096017%2C%20622825%2C%20660494%2C%20653014%2C%20157399%2C%20795751%2C%20645730%2C%20664501%2C%20633166%2C%20661864%2C%20656723%2C%20653200%2C%20663050%2C%20640990%2C%20637102%2C%20646461%2C%20679509%2C%20469862%2C%20715415%2C%20631912%2C%20651585%2C%20662243%2C%20664595%2C%20650377%2C%20639388%2C%20645608%2C%20664429";
+const options = { method: "GET" };
+
+const fetchDataFunction = () => {
+  fetch(url1)
+    .then((res1) => {
+      console.log("res1 success!", res1);
+      return res1.json();
+    })
+    .then((data1) => {
+      console.log(data1);
+      let fetchAvocadoData = data1;
+      return fetch(url2);
+    })
+    .then((res2) => {
+      console.log("res2 success!", res2);
+      return res2.json();
+    })
+    .then((data2) => {
+      console.log(data2);
+      let fetchRecipeData = data2;
+      createCards(fetchRecipeData, fetchAvocadoData);
+    })
+    .catch((e) => {
+      console.log("ERROR!", e);
+    });
+};
+
+// fetchDataFunction();
 
 let body = document.querySelector("body");
 body.classList.add("container-fluid");
@@ -23,45 +55,45 @@ body.appendChild(mainContainer);
 //
 //
 
-function createCards() {
+function createCards(recipeData, avocadoData) {
   for (i = 1; i < recipeData.length; i++) {
     //SECTION CARD (PARENT)
     let sectionCard = createSectionCard();
     mainContainer.appendChild(sectionCard);
 
     //HEADER (CHILD 1)
-    let header = createHeader();
+    let header = createHeader(avocadoData, i);
     sectionCard.appendChild(header);
 
     //IMAGE (CHILD 2)
-    let image = createImage();
+    let image = createImage(avocadoData, i);
     sectionCard.appendChild(image);
 
     //INGREDIENTS (CHILD 3)
     let ingredientsContainer = createIngredient();
     sectionCard.appendChild(ingredientsContainer);
 
-    //Instructions (CHILD 3.3)
-    let instructions = createInstructions();
+    //Instructions (CHILD 3.1)
+    let instructions = createInstructions(avocadoData, i, recipeData);
     ingredientsContainer.appendChild(instructions);
-    //Likes (CHILD 3.1)
-    let likes = createLikes();
+    //Likes (CHILD 3.2)
+    let likes = createLikes(avocadoData, i);
     ingredientsContainer.appendChild(likes);
 
-    //Other Ingredients - Text (CHILD 3.2.1)
+    //Other Ingredients - Text (CHILD 3.3.1)
     let otherIngredientsText = createOtherIngredientsText();
     ingredientsContainer.appendChild(otherIngredientsText);
 
-    //Other Ingredient - first three (CHILD 3.2.2)
-    let first3List = createFirst3();
+    //Other Ingredient - first three (CHILD 3.3.2)
+    let first3List = createFirst3(avocadoData, i);
     ingredientsContainer.appendChild(first3List);
     // let ingredientsList = createIngredientsList();
     // ingredientsContainer.appendChild(ingredientsList);
 
-    //See More - (Child 3.2.3)
-    let seeMoreText = createSeeMoreText();
+    //See More - (Child 3.3.3)
+    let seeMoreText = createSeeMoreText(avocadoData, i);
     first3List.appendChild(seeMoreText);
-    let hiddenSection = createHiddenSection();
+    let hiddenSection = createHiddenSection(avocadoData, i);
     seeMoreText.appendChild(hiddenSection);
 
     seeMoreText.addEventListener("click", expand);
@@ -75,12 +107,10 @@ function createCards() {
     }
 
     //Tags (CHILD 4)
-    let tags = createTags();
+    let tags = createTags(avocadoData, i, recipeData);
     sectionCard.appendChild(tags);
   }
 }
-
-createCards();
 
 function createSectionCard() {
   let sectionCard = document.createElement("section");
@@ -98,17 +128,17 @@ function createSectionCard() {
   return sectionCard;
 }
 
-function createHeader() {
+function createHeader(aData, i) {
   let headerContainer = document.createElement("div");
   let h5 = document.createElement("h5");
-  if (avocadoData[i].title.length < 35) {
-    h5.innerHTML = avocadoData[i].title;
+  if (aData[i].title.length < 35) {
+    h5.innerHTML = aData[i].title;
   } else {
-    let shortTitle = avocadoData[i].title.split(" ");
+    let shortTitle = aData[i].title.split(" ");
     h5.innerHTML = shortTitle.slice(0, 8).join(" ") + "...";
     h5.setAttribute("data-bs-toggle", "tooltip");
     h5.setAttribute("data-bs-placement", "bottom");
-    h5.setAttribute("title", avocadoData[i].title);
+    h5.setAttribute("title", aData[i].title);
     $(h5).tooltip();
   }
   h5.style.color = "#d387ab";
@@ -117,12 +147,12 @@ function createHeader() {
   return headerContainer;
 }
 
-function createImage() {
+function createImage(aData, i) {
   let imgContainer = document.createElement("div");
   imgContainer.style.display = "flex";
   imgContainer.style.flexDirection = "column";
   let img = document.createElement("img");
-  img.setAttribute("src", avocadoData[i].image);
+  img.setAttribute("src", aData[i].image);
   img.classList.add("img-fluid");
   img.style.alignSelf = "center";
   imgContainer.appendChild(img);
@@ -142,40 +172,40 @@ function createOtherIngredientsText() {
   return otherIngredientsText;
 }
 
-function createLikes() {
+function createLikes(aData, i) {
   let likes = document.createElement("p");
-  likes.innerHTML = avocadoData[i].likes + " Likes";
+  likes.innerHTML = aData[i].likes + " Likes";
   return likes;
 }
 
-function createTags() {
+function createTags(aData, i, rData) {
   let tags = document.createElement("p");
   tags.innerHTML = "Tags: &nbsp";
   tags.style.fontSize = "small";
 
-  for (x = 0; x < recipeData.length; x++) {
-    let identifier = avocadoData[i].id;
-    if (identifier === recipeData[x].id) {
+  for (x = 0; x < rData.length; x++) {
+    let identifier = aData[i].id;
+    if (identifier === rData[x].id) {
       if (
-        recipeData[x].vegetarian === false &&
-        recipeData[x].vegan === false &&
-        recipeData[x].glutenFree === false &&
-        recipeData[x].dairyFree === false
+        rData[x].vegetarian === false &&
+        rData[x].vegan === false &&
+        rData[x].glutenFree === false &&
+        rData[x].dairyFree === false
       ) {
         tags.innerHTML += "N/A";
-      } else if (recipeData[x].vegetarian === true) {
+      } else if (rData[x].vegetarian === true) {
         tags.innerHTML +=
           '<img src="https://cdn-icons.flaticon.com/png/512/3463/premium/3463358.png?token=exp=1650558165~hmac=2f8e03cd7eaf344710a7f9cdde9f7780" width="25px"> &nbsp';
       }
-      if (recipeData[x].vegan === true) {
+      if (rData[x].vegan === true) {
         tags.innerHTML +=
           '<img src="https://cdn-icons.flaticon.com/png/512/5769/premium/5769063.png?token=exp=1650558135~hmac=5bb33e6a6c8d13633f8240903c5a2b05" width="25px"> &nbsp';
       }
-      if (recipeData[x].glutenFree === true) {
+      if (rData[x].glutenFree === true) {
         tags.innerHTML +=
           '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905936.png?token=exp=1650557905~hmac=4ef73e036ef032071907bec917029dad" width="25px"> &nbsp ';
       }
-      if (recipeData[x].dairyFree === true) {
+      if (rData[x].dairyFree === true) {
         tags.innerHTML +=
           '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905942.png?token=exp=1650557979~hmac=5926bf662a65cfc1e66acbb0b111fd2b" width="25px"> &nbsp';
       }
@@ -184,34 +214,34 @@ function createTags() {
   return tags;
 }
 
-function createInstructions() {
+function createInstructions(aData, i, rData) {
   let instructions = document.createElement("a");
   instructions.style.alignSelf = "center";
   instructions.innerHTML = "See recipe here";
   instructions.style.paddingBottom = "2px";
 
-  for (x = 0; x < recipeData.length; x++) {
-    let identifier = avocadoData[i].id;
-    if (identifier === recipeData[x].id) {
-      instructions.setAttribute("href", recipeData[x].sourceUrl);
+  for (x = 0; x < rData.length; x++) {
+    let identifier = aData[i].id;
+    if (identifier === rData[x].id) {
+      instructions.setAttribute("href", rData[x].sourceUrl);
     }
   }
   return instructions;
 }
 
-function createFirst3() {
+function createFirst3(aData, i) {
   let first3List = document.createElement("ul");
   for (j = 0; j < 3; j++) {
     let first3 = document.createElement("li");
-    first3.innerHTML = avocadoData[i].missedIngredients[j].name;
+    first3.innerHTML = aData[i].missedIngredients[j].name;
     first3List.appendChild(first3);
   }
   return first3List;
 }
 
-function createSeeMoreText() {
+function createSeeMoreText(aData, i) {
   let seeMoreText = document.createElement("p");
-  if (avocadoData[i].missedIngredients.length > 3) {
+  if (aData[i].missedIngredients.length > 3) {
     seeMoreText.classList.add("leading");
     seeMoreText.innerHTML = "And more... 	&#8964;";
     seeMoreText.style.opacity = "70%";
@@ -219,13 +249,13 @@ function createSeeMoreText() {
   return seeMoreText;
 }
 
-function createHiddenSection() {
+function createHiddenSection(aData, i) {
   let hiddenSection = document.createElement("div");
   hiddenSection.classList.add("hidden-section");
 
-  for (j = 3; j < avocadoData[i].missedIngredients.length; j++) {
+  for (j = 3; j < aData[i].missedIngredients.length; j++) {
     let ingHiddenSection = document.createElement("li");
-    ingHiddenSection.innerHTML = avocadoData[i].missedIngredients[j].name;
+    ingHiddenSection.innerHTML = aData[i].missedIngredients[j].name;
     hiddenSection.appendChild(ingHiddenSection);
   }
   return hiddenSection;
