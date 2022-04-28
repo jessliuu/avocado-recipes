@@ -30,7 +30,7 @@ const fetchDataFunction = () => {
     .then((data2) => {
       console.log(data2);
       let fetchRecipeData = data2;
-      createCards(fetchRecipeData, fetchAvocadoData);
+      // createCards(fetchRecipeData, fetchAvocadoData);
     })
     .catch((e) => {
       console.log("ERROR!", e);
@@ -54,61 +54,68 @@ body.appendChild(mainContainer);
 
 //
 //
+createCards(recipeData, avocadoData);
 
 function createCards(recipeData, avocadoData) {
-  for (i = 1; i < recipeData.length; i++) {
-    //SECTION CARD (PARENT)
-    let sectionCard = createSectionCard();
-    mainContainer.appendChild(sectionCard);
+  mainContainer.innerHTML = "";
+  for (i = 1; i < avocadoData.length; i++) {
+    for (x = 0; x < recipeData.length; x++) {
+      let identifier = avocadoData[i].id;
+      if (identifier === recipeData[x].id) {
+        //SECTION CARD (PARENT)
+        let sectionCard = createSectionCard();
+        mainContainer.appendChild(sectionCard);
 
-    //HEADER (CHILD 1)
-    let header = createHeader(avocadoData, i);
-    sectionCard.appendChild(header);
+        //HEADER (CHILD 1)
+        let header = createHeader(avocadoData, i);
+        sectionCard.appendChild(header);
 
-    //IMAGE (CHILD 2)
-    let image = createImage(avocadoData, i);
-    sectionCard.appendChild(image);
+        //IMAGE (CHILD 2)
+        let image = createImage(avocadoData, i);
+        sectionCard.appendChild(image);
 
-    //INGREDIENTS (CHILD 3)
-    let ingredientsContainer = createIngredient();
-    sectionCard.appendChild(ingredientsContainer);
+        //INGREDIENTS (CHILD 3)
+        let ingredientsContainer = createIngredient();
+        sectionCard.appendChild(ingredientsContainer);
 
-    //Instructions (CHILD 3.1)
-    let instructions = createInstructions(avocadoData, i, recipeData);
-    ingredientsContainer.appendChild(instructions);
-    //Likes (CHILD 3.2)
-    let likes = createLikes(avocadoData, i);
-    ingredientsContainer.appendChild(likes);
+        //Instructions (CHILD 3.1)
+        let instructions = createInstructions(avocadoData, i, recipeData);
+        ingredientsContainer.appendChild(instructions);
+        //Likes (CHILD 3.2)
+        let likes = createLikes(avocadoData, i);
+        ingredientsContainer.appendChild(likes);
 
-    //Other Ingredients - Text (CHILD 3.3.1)
-    let otherIngredientsText = createOtherIngredientsText();
-    ingredientsContainer.appendChild(otherIngredientsText);
+        //Other Ingredients - Text (CHILD 3.3.1)
+        let otherIngredientsText = createOtherIngredientsText();
+        ingredientsContainer.appendChild(otherIngredientsText);
 
-    //Other Ingredient - first three (CHILD 3.3.2)
-    let first3List = createFirst3(avocadoData, i);
-    ingredientsContainer.appendChild(first3List);
-    // let ingredientsList = createIngredientsList();
-    // ingredientsContainer.appendChild(ingredientsList);
+        //Other Ingredient - first three (CHILD 3.3.2)
+        let first3List = createFirst3(avocadoData, i);
+        ingredientsContainer.appendChild(first3List);
+        // let ingredientsList = createIngredientsList();
+        // ingredientsContainer.appendChild(ingredientsList);
 
-    //See More - (Child 3.3.3)
-    let seeMoreText = createSeeMoreText(avocadoData, i);
-    first3List.appendChild(seeMoreText);
-    let hiddenSection = createHiddenSection(avocadoData, i);
-    seeMoreText.appendChild(hiddenSection);
+        //See More - (Child 3.3.3)
+        let seeMoreText = createSeeMoreText(avocadoData, i);
+        first3List.appendChild(seeMoreText);
+        let hiddenSection = createHiddenSection(avocadoData, i);
+        seeMoreText.appendChild(hiddenSection);
 
-    seeMoreText.addEventListener("click", expand);
+        seeMoreText.addEventListener("click", expand);
 
-    function expand() {
-      if (hiddenSection.classList.contains("reveal")) {
-        hiddenSection.classList.remove("reveal");
-      } else {
-        hiddenSection.classList.add("reveal");
+        function expand() {
+          if (hiddenSection.classList.contains("reveal")) {
+            hiddenSection.classList.remove("reveal");
+          } else {
+            hiddenSection.classList.add("reveal");
+          }
+        }
+
+        //Tags (CHILD 4)
+        let tags = createTags(avocadoData, i, recipeData);
+        sectionCard.appendChild(tags);
       }
     }
-
-    //Tags (CHILD 4)
-    let tags = createTags(avocadoData, i, recipeData);
-    sectionCard.appendChild(tags);
   }
 }
 
@@ -220,12 +227,8 @@ function createInstructions(aData, i, rData) {
   instructions.innerHTML = "See recipe here";
   instructions.style.paddingBottom = "2px";
 
-  for (x = 0; x < rData.length; x++) {
-    let identifier = aData[i].id;
-    if (identifier === rData[x].id) {
-      instructions.setAttribute("href", rData[x].sourceUrl);
-    }
-  }
+  instructions.setAttribute("href", rData[x].sourceUrl);
+
   return instructions;
 }
 
@@ -260,3 +263,52 @@ function createHiddenSection(aData, i) {
   }
   return hiddenSection;
 }
+
+function createDropDown() {
+  const dropDown = document.getElementById("tags");
+  const diets = ["Dairy Free", "Gluten Free", "Vegan", "Vegetarian"];
+  diets.forEach((diet) => {
+    let option = document.createElement("option");
+    option.innerHTML = diet;
+    option.value = diet;
+    dropDown.appendChild(option);
+  });
+}
+
+createDropDown();
+
+function setEventListener(rData, aData) {
+  document.querySelector("#tags").addEventListener("change", (event) => {
+    filterByDropDown(rData, aData);
+  });
+}
+
+function filterByDropDown(rData, aData) {
+  let filteredData = [];
+  const dropDownValue = document.querySelector("#tags").value;
+  if (dropDownValue === "Vegetarian") {
+    filteredData = rData.filter((r) => {
+      return r.vegetarian === true;
+    });
+  } else if (dropDownValue === "Vegan") {
+    filteredData = rData.filter((r) => {
+      return r.vegan === true;
+    });
+  } else if (dropDownValue === "Gluten Free") {
+    filteredData = rData.filter((r) => {
+      return r.glutenFree === true;
+    });
+  } else if (dropDownValue === "Dairy Free") {
+    filteredData = rData.filter((r) => {
+      return r.dairyFree === true;
+    });
+  } else if (dropDownValue === "all") {
+    filteredData = rData;
+  }
+  console.log(filteredData);
+
+  createCards(filteredData, aData);
+}
+
+setEventListener(recipeData, avocadoData);
+console.log("hello");
