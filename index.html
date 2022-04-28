@@ -12,11 +12,9 @@
       crossorigin="anonymous"
     />
 
-    <title>Avocado Recipes</title>
+    <title>Avocado You</title>
   </head>
-  <body>
-
-
+  <body class="container-fluid">
     <nav>
       <a href="#">
         <img
@@ -27,14 +25,33 @@
         />
       </a>
       <p class="display-4">Avocado You</p>
-
-      
-        <select name="tags" id="tags">
-            <option value="all">All</option>
+      <div class="dropdown">
+        <select
+          name="tags"
+          id="tags"
+          class="btn btn-warning dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton tags"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <option class="dropdown-item" value="all">All</option>
+          <option class="dropdown-item" value="Dairy Free">Dairy Free</option>
+          <option class="dropdown-item" value="Gluten Free">Gluten Free</option>
+          <option class="dropdown-item" value="Vegan">Vegan</option>
+          <option class="dropdown-item" value="Vegetarian">Vegetarian</option>
         </select>
-   
-
-    <div class="col-md-16 bg-success"></div>
+      </div>
+    </nav>
+    <div class="col-md-16">
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, fuga
+        repellat veniam eius, quae ipsum voluptates a quod illum dolore quisquam
+        rem eligendi obcaecati animi accusantium impedit, odit nesciunt
+        praesentium.
+      </p>
+    </div>
 
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

@@ -1,11 +1,3 @@
-// console.log(recipeData);
-// console.log(avocadoData[2].id);
-// console.log(recipeData[1].id);
-
-// if (avocadoData[2].id === recipeData[1].id) {
-//   console.log(avocadoData[2].id);
-// }
-
 const url1 =
   "https://api.spoonacular.com/recipes/findByIngredients?apiKey=5bb2ba85e71141829b3107f5df442fce&ingredients=avocado&number=100";
 const url2 =
@@ -40,21 +32,20 @@ const fetchDataFunction = () => {
 // fetchDataFunction();
 
 let body = document.querySelector("body");
-body.classList.add("container-fluid");
-
-let nav = document.querySelector("nav");
-nav.style.display = "flex";
-nav.style.alignItems = "center";
 
 let mainContainer = document.createElement("main");
 mainContainer.classList.add("row");
-// mainContainer.style.display = "flex";
-// mainContainer.style.justifyContent = "space-evenly";
 body.appendChild(mainContainer);
 
 //
 //
-createCards(recipeData, avocadoData);
+controller();
+
+function controller() {
+  createCards(recipeData, avocadoData);
+  // createDropDown();
+  setEventListener(recipeData, avocadoData);
+}
 
 function createCards(recipeData, avocadoData) {
   mainContainer.innerHTML = "";
@@ -119,6 +110,7 @@ function createCards(recipeData, avocadoData) {
   }
 }
 
+//#region -Components of a card-
 function createSectionCard() {
   let sectionCard = document.createElement("section");
   sectionCard.classList.add("col-lg-3");
@@ -263,6 +255,7 @@ function createHiddenSection(aData, i) {
   }
   return hiddenSection;
 }
+//#endregion
 
 function createDropDown() {
   const dropDown = document.getElementById("tags");
@@ -274,8 +267,6 @@ function createDropDown() {
     dropDown.appendChild(option);
   });
 }
-
-createDropDown();
 
 function setEventListener(rData, aData) {
   document.querySelector("#tags").addEventListener("change", (event) => {
@@ -309,6 +300,3 @@ function filterByDropDown(rData, aData) {
 
   createCards(filteredData, aData);
 }
-
-setEventListener(recipeData, avocadoData);
-console.log("hello");

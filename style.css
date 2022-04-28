@@ -3,6 +3,17 @@
   /* color: #d387ab; */
 }
 
+nav {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.dropdown {
+  align-self: flex-end;
+  justify-self: end;
+}
+
 .hidden-section {
   display: none;
 }
