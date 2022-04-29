@@ -115,8 +115,9 @@ function createSectionCard() {
   let sectionCard = document.createElement("section");
   sectionCard.classList.add("col-lg-3");
   sectionCard.classList.add("col-sm-6");
-  sectionCard.style.border = "1px solid #d387ab";
-  sectionCard.style.borderTop = "0px";
+  sectionCard.style.backgroundColor = "#a0d656";
+  sectionCard.style.border = "1px solid white";
+  // sectionCard.style.borderTop = "0px";
   // sectionCard.style.maxHeight = "40rem";
   sectionCard.style.display = "grid";
   sectionCard.style.gridTemplateRows = "0.5fr 2fr 2fr 0.3fr";
@@ -140,7 +141,8 @@ function createHeader(aData, i) {
     h5.setAttribute("title", aData[i].title);
     $(h5).tooltip();
   }
-  h5.style.color = "#d387ab";
+  // h5.style.color = "#d387ab";
+  h5.style.color = "#325a27";
   headerContainer.appendChild(h5);
   headerContainer.style.alignSelf = "center";
   return headerContainer;
@@ -217,6 +219,7 @@ function createInstructions(aData, i, rData) {
   let instructions = document.createElement("a");
   instructions.style.alignSelf = "center";
   instructions.innerHTML = "See recipe here";
+  instructions.style.color = "white";
   instructions.style.paddingBottom = "2px";
 
   instructions.setAttribute("href", rData[x].sourceUrl);

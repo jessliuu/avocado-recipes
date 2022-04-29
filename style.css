@@ -1,17 +1,31 @@
 * {
   font-family: Avenir Book;
-  /* color: #d387ab; */
+  color: #325a27;
 }
 
-nav {
+a {
+  color: white;
+}
+
+h1 {
+  color: white;
+  font-style: bold;
+  -webkit-text-stroke: 1px green;
+}
+
+div.col-12 p {
+  font-weight: 200;
+  color: green;
+}
+
+.navflex {
   display: flex;
   align-items: center;
-  /* justify-content: center; */
 }
-
-.dropdown {
-  align-self: flex-end;
-  justify-self: end;
+.dropdownflex {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .hidden-section {

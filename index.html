@@ -15,42 +15,49 @@
     <title>Avocado You</title>
   </head>
   <body class="container-fluid">
-    <nav>
-      <a href="#">
-        <img
-          src="https://cdn.pixabay.com/photo/2018/09/03/11/51/avocado-3651037_960_720.png"
-          alt="avocado-logo"
-          width="300"
-          height="240"
-        />
-      </a>
-      <p class="display-4">Avocado You</p>
-      <div class="dropdown">
-        <select
-          name="tags"
-          id="tags"
-          class="btn btn-warning dropdown-toggle"
-          type="button"
-          id="dropdownMenuButton tags"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          <option class="dropdown-item" value="all">All</option>
-          <option class="dropdown-item" value="Dairy Free">Dairy Free</option>
-          <option class="dropdown-item" value="Gluten Free">Gluten Free</option>
-          <option class="dropdown-item" value="Vegan">Vegan</option>
-          <option class="dropdown-item" value="Vegetarian">Vegetarian</option>
-        </select>
+    <nav class="navflex">
+    <a href="#"></a>       
+    <img
+            src="https://cdn.pixabay.com/photo/2018/09/03/11/51/avocado-3651037_960_720.png"
+            alt="avocado-logo"
+            width="300"
+            height="240"
+          />
+        </a>
+   
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <h1 class="display-4">Avocado You</h1>
       </div>
-    </nav>
-    <div class="col-md-16">
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, fuga
-        repellat veniam eius, quae ipsum voluptates a quod illum dolore quisquam
-        rem eligendi obcaecati animi accusantium impedit, odit nesciunt
-        praesentium.
-      </p>
+
+      <div class="col-12 col-md-8">
+        <p>
+          Just like you, we love avocados! This nutritious superfood has become one of the most beloved breakfast ingredients, and with its versatile nature it is omnipresent in all kinds of dishes. Here, we have collected some recipes to share this love. Search for surprises! Spoiler: avocado icecream might just be your new favorite dessert.
+        </p>
+      </div>
+    </div>
+  </nav>
+
+<div class="dropdownflex">
+    <div class="dropdown">
+      <select
+        name="tags"
+        class="btn btn-warning dropdown-toggle"
+        type="button"
+        id="dropdownMenuButton tags"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <option class="dropdown-item" value="all">All</option>
+        <option class="dropdown-item" value="Dairy Free">Dairy Free</option>
+        <option class="dropdown-item" value="Gluten Free">Gluten Free</option>
+        <option class="dropdown-item" value="Vegan">Vegan</option>
+        <option class="dropdown-item" value="Vegetarian">Vegetarian</option>
+      </select>
+
+      </div>
+    </div>
     </div>
 
     <script
