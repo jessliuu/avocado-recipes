@@ -28,6 +28,9 @@ div.col-12 p {
   justify-content: space-evenly;
 }
 
+form {
+  display: inline !important;
+}
 .hidden-section {
   display: none;
 }
