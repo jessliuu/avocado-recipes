@@ -58,19 +58,20 @@ const getDataAsync = async (ingredient) => {
     const response2 = await fetch(url2);
     const data2 = await response2.json();
     console.log("data2", data2);
-    // let allData = [data, data2];
-    // console.log(allData);
-    // return allData;
 
     createCards(data2, data);
+
+    //Make dropdown filter work
     setEventListener(data2, data);
+
+    //Make dynamic fetch work
     createEvent();
   } catch (error) {
     console.log("error", error);
   }
 };
 
-//getDataAsync("avocado");
+// getDataAsync("carrot");
 
 // const controller = async () => {
 //   const allData = await getDataAsync();
@@ -82,9 +83,11 @@ const getDataAsync = async (ingredient) => {
 //   createEvent()
 // };
 
-console.log(appleData[2].missedIngredients[1].name);
-createCards(appleRecipes, appleData);
-// setEventListener(appleRecipes, appleData);
+console.log(appleData[0].missedIngredients[1].name);
+console.log(typeof appleRecipes[0].readyInMinutes);
+
+createCards(recipeData, avocadoData);
+setEventListener(recipeData, avocadoData);
 
 const createEvent = () => {
   let ingredient = "";
@@ -101,6 +104,78 @@ const createEvent = () => {
     }
   });
 };
+
+function setEventListener(rData, aData) {
+  let selectedDiet = document.querySelector(".tags");
+  let selectedMinutes = document.querySelector(".minutes");
+
+  selectedDiet.addEventListener("change", (event) => {
+    filterByDropDown(rData, aData);
+    let filteredrData = filterByDropDown(rData, aData);
+    selectedMinutes.addEventListener("change", (event) => {
+      filterByMinutes(filteredrData, aData);
+    });
+  });
+
+  selectedMinutes.addEventListener("change", (event) => {
+    filterByMinutes(rData, aData);
+    let filteredMinutes = filterByMinutes(rData, aData);
+    selectedDiet.addEventListener("change", (event) => {
+      filterByDropDown(filteredMinutes, aData);
+    });
+  });
+}
+
+function filterByDropDown(rData, aData) {
+  let filteredrData = [];
+  const dropDownValue = document.querySelector(".tags").value;
+  if (dropDownValue === "Vegetarian") {
+    filteredrData = rData.filter((r) => {
+      return r.vegetarian === true;
+    });
+  } else if (dropDownValue === "Vegan") {
+    filteredrData = rData.filter((r) => {
+      return r.vegan === true;
+    });
+  } else if (dropDownValue === "Gluten Free") {
+    filteredrData = rData.filter((r) => {
+      return r.glutenFree === true;
+    });
+  } else if (dropDownValue === "Dairy Free") {
+    filteredrData = rData.filter((r) => {
+      return r.dairyFree === true;
+    });
+  } else if (dropDownValue === "all") {
+    filteredrData = rData;
+  }
+  console.log(filteredrData);
+  createCards(filteredrData, aData);
+  return filteredrData;
+}
+
+function filterByMinutes(rData, aData) {
+  let filteredMinutes = [];
+  const selectedMinutes = document.querySelector(".minutes").value;
+  if (selectedMinutes === "<30") {
+    filteredMinutes = rData.filter((r) => {
+      return r.readyInMinutes < 31;
+    });
+  } else if (selectedMinutes === "31-60") {
+    filteredMinutes = rData.filter((r) => {
+      return r.readyInMinutes > 30 && r.readyInMinutes < 61;
+    });
+  } else if (selectedMinutes === ">60") {
+    filteredMinutes = rData.filter((r) => {
+      return r.readyInMinutes > 60 && r.readyInMinutes < 121;
+    });
+  } else if (selectedMinutes === "all") {
+    filteredMinutes = rData;
+  }
+  console.log(filteredMinutes);
+
+  createCards(filteredMinutes, aData);
+  return filteredMinutes;
+}
 
 function createCards(recipeData, avocadoData) {
   mainContainer.innerHTML = "";
@@ -136,26 +211,24 @@ function createCards(recipeData, avocadoData) {
         ingredientsContainer.appendChild(otherIngredientsText);
 
         //Other Ingredient - first three (CHILD 3.3.2)
-        let first3List = createFirst3(avocadoData, i);
-        ingredientsContainer.appendChild(first3List);
-        // let ingredientsList = createIngredientsList();
-        // ingredientsContainer.appendChild(ingredientsList);
+        // let first3List = createFirst3(avocadoData, i);
+        // ingredientsContainer.appendChild(first3List);
 
         //See More - (Child 3.3.3)
-        let seeMoreText = createSeeMoreText(avocadoData, i);
-        first3List.appendChild(seeMoreText);
-        let hiddenSection = createHiddenSection(avocadoData, i);
-        seeMoreText.appendChild(hiddenSection);
+        // let seeMoreText = createSeeMoreText(avocadoData, i);
+        // first3List.appendChild(seeMoreText);
+        // let hiddenSection = createHiddenSection(avocadoData, i);
+        // seeMoreText.appendChild(hiddenSection);
 
-        seeMoreText.addEventListener("click", expand);
+        // seeMoreText.addEventListener("click", expand);
 
-        function expand() {
-          if (hiddenSection.classList.contains("reveal")) {
-            hiddenSection.classList.remove("reveal");
-          } else {
-            hiddenSection.classList.add("reveal");
-          }
-        }
+        // function expand() {
+        //   if (hiddenSection.classList.contains("reveal")) {
+        //     hiddenSection.classList.remove("reveal");
+        //   } else {
+        //     hiddenSection.classList.add("reveal");
+        //   }
+        // }
 
         //Tags (CHILD 4)
         let tags = createTags(avocadoData, i, recipeData);
@@ -314,48 +387,3 @@ function createHiddenSection(aData, i) {
   return hiddenSection;
 }
 //#endregion
-
-function createDropDown() {
-  const dropDown = document.getElementById("tags");
-  const diets = ["Dairy Free", "Gluten Free", "Vegan", "Vegetarian"];
-  diets.forEach((diet) => {
-    let option = document.createElement("option");
-    option.innerHTML = diet;
-    option.value = diet;
-    dropDown.appendChild(option);
-  });
-}
-
-function setEventListener(rData, aData) {
-  let dropdown = document.querySelector(".tags");
-  dropdown.addEventListener("change", (event) => {
-    filterByDropDown(rData, aData);
-  });
-}
-
-function filterByDropDown(rData, aData) {
-  let filteredData = [];
-  const dropDownValue = document.querySelector(".tags").value;
-  if (dropDownValue === "Vegetarian") {
-    filteredData = rData.filter((r) => {
-      return r.vegetarian === true;
-    });
-  } else if (dropDownValue === "Vegan") {
-    filteredData = rData.filter((r) => {
-      return r.vegan === true;
-    });
-  } else if (dropDownValue === "Gluten Free") {
-    filteredData = rData.filter((r) => {
-      return r.glutenFree === true;
-    });
-  } else if (dropDownValue === "Dairy Free") {
-    filteredData = rData.filter((r) => {
-      return r.dairyFree === true;
-    });
-  } else if (dropDownValue === "all") {
-    filteredData = rData;
-  }
-  console.log(filteredData);
-
-  createCards(filteredData, aData);
-}
