@@ -1,3 +1,16 @@
+console.log(recipeData[4].diets);
+
+let dietarr = [
+  "gluten free",
+  "dairy free",
+  "paleolithic",
+  "lacto ovo vegetarian",
+  "primal",
+];
+let myCheckedBoxesarr = ["primal", "gluten free"];
+let containsAll = myCheckedBoxesarr.every((e) => dietarr.includes(e));
+console.log(containsAll);
+
 const apikey = "5bb2ba85e71141829b3107f5df442fce";
 
 let body = document.querySelector("body");
@@ -75,7 +88,12 @@ const getDataAsync = async (ingredient) => {
 
 // getDataAsync("carrot");
 
-controller("avocado");
+// controller("avocado");
+
+createCards(recipeData, avocadoData);
+
+setEventListener(recipeData, avocadoData);
+// createEvent();
 
 const createEvent = () => {
   let ingredient = "";
@@ -94,25 +112,84 @@ const createEvent = () => {
 };
 
 function setEventListener(rData, aData) {
-  let selectedDiet = document.querySelector(".tags");
+  let checkboxes = document.querySelector(".dietContainer");
   let selectedMinutes = document.querySelector(".minutes");
 
-  selectedDiet.addEventListener("change", (event) => {
-    filterByDropDown(rData, aData);
-    let filteredrData = filterByDropDown(rData, aData);
+  checkboxes.addEventListener("change", (event) => {
+    filterByDiet(rData, aData);
+    let filteredRecipes = filterByDiet(rData, aData);
     selectedMinutes.addEventListener("change", (event) => {
-      filterByMinutes(filteredrData, aData);
+      filterByMinutes(filteredRecipes, aData);
     });
   });
 
   selectedMinutes.addEventListener("change", (event) => {
     filterByMinutes(rData, aData);
     let filteredMinutes = filterByMinutes(rData, aData);
-    selectedDiet.addEventListener("change", (event) => {
-      filterByDropDown(filteredMinutes, aData);
+    checkboxes.addEventListener("change", (event) => {
+      filterByDiet(filteredMinutes, aData);
     });
   });
+
+  //   let selectedDiet = document.querySelector(".tags");
+  //   let selectedMinutes = document.querySelector(".minutes");
+
+  // selectedDiet.addEventListener("change", (event) => {
+  //   filterByDropDown(rData, aData);
+  //   let filteredrData = filterByDropDown(rData, aData);
+  //   selectedMinutes.addEventListener("change", (event) => {
+  //     filterByMinutes(filteredrData, aData);
+  //   });
+  // });
+
+  // selectedMinutes.addEventListener("change", (event) => {
+  //   filterByMinutes(rData, aData);
+  //   let filteredMinutes = filterByMinutes(rData, aData);
+  //   selectedDiet.addEventListener("change", (event) => {
+  //     filterByDropDown(filteredMinutes, aData);
+  //   });
+  // });
 }
+
+function setDietEventListener(rData, aData) {
+  let checkboxes = document.querySelector(".dietContainer");
+  // let selectedDiet = "";
+  // let filteredRecipes = rData;
+  checkboxes.addEventListener("change", (e) => {
+    // console.log(e.target.checked, e.target.value);
+    // selectedDiet = e.target.value;
+    // selectedDietBoolean = e.target.checked;
+
+    filterByDiet(rData, aData);
+    // filteredRecipes = filterByDiet();
+  });
+  // let filteredRecipes = filterByDiet();
+  // checkboxes.addEventListener("change", (e) => {
+  //   filterByDiet(selectedDiet, selectedDietBoolean, filteredRecipes, aData);
+  // });
+}
+
+function filterByDiet(rData, aData) {
+  let myCheckedBoxes = Array.from(
+    document.querySelectorAll("input[type='checkbox']:checked")
+  ).map((checked) => checked.value);
+  console.log(myCheckedBoxes);
+
+  let filteredRecipes = [];
+
+  for (let i = 0; i < rData.length; i++) {
+    if (myCheckedBoxes.every((e) => rData[i].diets.includes(e))) {
+      filteredRecipes.push(rData[i]);
+    }
+  }
+
+  console.log(filteredRecipes);
+
+  createCards(filteredRecipes, aData);
+  return filteredRecipes;
+}
+
+// setDietEventListener(recipeData, avocadoData);
 
 function filterByDropDown(rData, aData) {
   const dropDownValue = document.querySelector(".tags").value;
@@ -129,7 +206,7 @@ function filterByDropDown(rData, aData) {
 }
 
 function filterByMinutes(rData, aData) {
-  let filteredMinutes = [];
+  let filteredMinutes = rData;
   const selectedMinutes = document.querySelector(".minutes").value;
 
   if (selectedMinutes === "lessThan30") {
