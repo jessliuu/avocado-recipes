@@ -1,4 +1,4 @@
-console.log(recipeData[4].diets);
+// console.log(recipeData[4].diets);
 
 let dietarr = [
   "gluten free",
@@ -50,36 +50,33 @@ body.appendChild(mainContainer);
 
 // fetchDataFunction();
 
-const controller = async (ingredient) => {
-  const allData = await getDataAsync(ingredient);
-  console.log(allData);
-  createCards(allData.data2, allData.data1);
-  setEventListener(allData.data2, allData.data1);
-  createEvent();
-};
-
 const getDataAsync = async (ingredient) => {
   let url1 = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apikey}&ingredients=${ingredient}&number=2`;
   try {
     let response = await fetch(url1);
     let data1 = await response.json();
     console.log("data1", data1);
-
+    // ! maybe a condition could have been useful. the second fetch it is going to wait for the first, but if data1 is empty you don't want to loop
+    //  ! and fetch again. use if(data.length > 0)
     let ids = [];
     for (let i = 0; i < data1.length; i++) {
       ids.push(data1[i].id);
     }
 
     // let data2 = [];
+
     // if (data1) {
+
     let url2 = `https://api.spoonacular.com/recipes/informationBulk?apiKey=${apikey}&ids=`;
     for (j = 0; j < ids.length; j++) {
       url2 += ids[j] + "%2C%20";
     }
+
     const response2 = await fetch(url2);
     let data2 = await response2.json();
     console.log("data2", data2);
     // }
+    // ! you could have used a better naming (instead of data1 and data2, ingredients and recipes)
     return { data2, data1 };
   } catch (error) {
     console.log("error", error);
@@ -88,12 +85,10 @@ const getDataAsync = async (ingredient) => {
 
 // getDataAsync("carrot");
 
-// controller("avocado");
-
 createCards(recipeData, avocadoData);
 
 setEventListener(recipeData, avocadoData);
-// createEvent();
+createEvent();
 
 const createEvent = () => {
   let ingredient = "";
@@ -114,9 +109,10 @@ const createEvent = () => {
 function setEventListener(rData, aData) {
   let checkboxes = document.querySelector(".dietContainer");
   let selectedMinutes = document.querySelector(".minutes");
-
+  // ! nice use of event bubbling here! :)
   checkboxes.addEventListener("change", (event) => {
-    filterByDiet(rData, aData);
+    // ! why are you calling filterByDiet() and filterByMinutes() twice? once is enough
+    // filterByDiet(rData, aData);
     let filteredRecipes = filterByDiet(rData, aData);
     selectedMinutes.addEventListener("change", (event) => {
       filterByMinutes(filteredRecipes, aData);
@@ -124,13 +120,14 @@ function setEventListener(rData, aData) {
   });
 
   selectedMinutes.addEventListener("change", (event) => {
-    filterByMinutes(rData, aData);
+    // filterByMinutes(rData, aData);
     let filteredMinutes = filterByMinutes(rData, aData);
     checkboxes.addEventListener("change", (event) => {
       filterByDiet(filteredMinutes, aData);
     });
   });
 
+  // ! Raul will show you a nicer and more elegant way of combining filters, but happy to see that it works!
   //   let selectedDiet = document.querySelector(".tags");
   //   let selectedMinutes = document.querySelector(".minutes");
 
@@ -176,7 +173,9 @@ function filterByDiet(rData, aData) {
   console.log(myCheckedBoxes);
 
   let filteredRecipes = [];
-
+  // ! you are using the checkboxes with a inclusive behavior (if both vegetarian and vegan are selected,
+  // ! you show only recipes that are both vegetarian and vegan). however I am not sure this makes sense in the case of food, because if a recipe
+  //  ! is vegan, then it has to be vegetatian as well. we will discuss this better next week
   for (let i = 0; i < rData.length; i++) {
     if (myCheckedBoxes.every((e) => rData[i].diets.includes(e))) {
       filteredRecipes.push(rData[i]);
@@ -275,6 +274,7 @@ function createCards(recipeData, avocadoData) {
         seeMoreText.addEventListener("click", expand);
 
         function expand() {
+          // ! you can use this and comment the if/else: hiddenSection.classList.toggle("reveal");
           if (hiddenSection.classList.contains("reveal")) {
             hiddenSection.classList.remove("reveal");
           } else {
@@ -364,31 +364,32 @@ function createTags(aData, i, rData) {
   tags.innerHTML = "Tags: &nbsp";
   tags.style.fontSize = "small";
 
-  {
-    if (
-      rData[x].vegetarian === false &&
-      rData[x].vegan === false &&
-      rData[x].glutenFree === false &&
-      rData[x].dairyFree === false
-    ) {
-      tags.innerHTML += "N/A";
-    } else if (rData[x].vegetarian === true) {
-      tags.innerHTML +=
-        '<img src="https://cdn-icons.flaticon.com/png/512/3463/premium/3463358.png?token=exp=1650558165~hmac=2f8e03cd7eaf344710a7f9cdde9f7780" width="25px"> &nbsp';
-    }
-    if (rData[x].vegan === true) {
-      tags.innerHTML +=
-        '<img src="https://cdn-icons.flaticon.com/png/512/5769/premium/5769063.png?token=exp=1650558135~hmac=5bb33e6a6c8d13633f8240903c5a2b05" width="25px"> &nbsp';
-    }
-    if (rData[x].glutenFree === true) {
-      tags.innerHTML +=
-        '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905936.png?token=exp=1650557905~hmac=4ef73e036ef032071907bec917029dad" width="25px"> &nbsp ';
-    }
-    if (rData[x].dairyFree === true) {
-      tags.innerHTML +=
-        '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905942.png?token=exp=1650557979~hmac=5926bf662a65cfc1e66acbb0b111fd2b" width="25px"> &nbsp';
-    }
+  // {
+  // ! you could try to use a switch statement here
+  if (
+    rData[x].vegetarian === false &&
+    rData[x].vegan === false &&
+    rData[x].glutenFree === false &&
+    rData[x].dairyFree === false
+  ) {
+    tags.innerHTML += "N/A";
+  } else if (rData[x].vegetarian === true) {
+    tags.innerHTML +=
+      '<img src="https://cdn-icons.flaticon.com/png/512/3463/premium/3463358.png?token=exp=1650558165~hmac=2f8e03cd7eaf344710a7f9cdde9f7780" width="25px"> &nbsp';
   }
+  if (rData[x].vegan === true) {
+    tags.innerHTML +=
+      '<img src="https://cdn-icons.flaticon.com/png/512/5769/premium/5769063.png?token=exp=1650558135~hmac=5bb33e6a6c8d13633f8240903c5a2b05" width="25px"> &nbsp';
+  }
+  if (rData[x].glutenFree === true) {
+    tags.innerHTML +=
+      '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905936.png?token=exp=1650557905~hmac=4ef73e036ef032071907bec917029dad" width="25px"> &nbsp ';
+  }
+  if (rData[x].dairyFree === true) {
+    tags.innerHTML +=
+      '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905942.png?token=exp=1650557979~hmac=5926bf662a65cfc1e66acbb0b111fd2b" width="25px"> &nbsp';
+  }
+  // }
   return tags;
 }
 
@@ -440,3 +441,13 @@ function createHiddenSection(aData, i) {
   return hiddenSection;
 }
 //#endregion
+const controller = async (ingredient) => {
+  const allData = await getDataAsync(ingredient);
+  console.log(allData);
+  createCards(allData.data2, allData.data1);
+  setEventListener(allData.data2, allData.data1);
+  // ! createEvent could be outside the controller, you don't need to wait for the data in order to create this event. if you leave it inside
+  // ! the controller, everytime you fetch again you also recreate the event (not very efficient)
+  createEvent();
+};
+// controller("avocado");
