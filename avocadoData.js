@@ -1,4 +1,4 @@
-let avocadoData = {
+let res = {
   results: [
     {
       id: 1096025,
@@ -155,3 +155,5 @@ let avocadoData = {
   number: 25,
   totalResults: 29,
 };
+
+let avocadoData = res.results;
