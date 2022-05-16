@@ -7,39 +7,7 @@ let mainContainer = document.createElement("div");
 mainContainer.classList.add("row");
 main.appendChild(mainContainer);
 
-// FETCH/THEN - NOT USING ASYNC/AWAIT
-// const url1 =
-//   "https://api.spoonacular.com/recipes/findByIngredients?apiKey=5bb2ba85e71141829b3107f5df442fce&ingredients=avocado&number=100";
-// const url2 =
-//   "https://api.spoonacular.com/recipes/informationBulk?apiKey=5bb2ba85e71141829b3107f5df442fce&ids=633165%2C%20634048%2C%20648439%2C%201697397%2C%201512847%2C%20715543%2C%20633144%2C%20633160%2C%20650751%2C%20664997%2C%20633157%2C%20649335%2C%20664394%2C%20643455%2C%20633123%2C%20660108%2C%20715521%2C%20780000%2C%20640062%2C%20633132%2C%20645479%2C%20800754%2C%20640959%2C%20650789%2C%20654430%2C%20633120%2C%20633264%2C%20642780%2C%20633141%2C%20650471%2C%20673436%2C%20645988%2C%20663054%2C%201160166%2C%20633126%2C%20632788%2C%20633133%2C%20637999%2C%20643428%2C%20650860%2C%20633117%2C%20633119%2C%20637480%2C%20647608%2C%20650809%2C%20646632%2C%20655785%2C%20665178%2C%20715544%2C%20716437%2C%20633139%2C%20662670%2C%20644593%2C%20658495%2C%20651707%2C%20636676%2C%20643861%2C%20982371%2C%20638593%2C%20645687%2C%20656519%2C%20661431%2C%20635074%2C%20661188%2C%20638741%2C%20640311%2C%20157344%2C%20660024%2C%20661126%2C%20642395%2C%20649343%2C%20657679%2C%201096017%2C%20622825%2C%20660494%2C%20653014%2C%20157399%2C%20795751%2C%20645730%2C%20664501%2C%20633166%2C%20661864%2C%20656723%2C%20653200%2C%20663050%2C%20640990%2C%20637102%2C%20646461%2C%20679509%2C%20469862%2C%20715415%2C%20631912%2C%20651585%2C%20662243%2C%20664595%2C%20650377%2C%20639388%2C%20645608%2C%20664429";
-
-// const fetchDataFunction = (url1, url2) => {
-//   fetch(url1)
-//     .then((res1) => {
-//       console.log("res1 success!", res1);
-//       return res1.json();
-//     })
-//     .then((data1) => {
-//       console.log(data1);
-//       let fetchAvocadoData = data1;
-//       return fetch(url2);
-//     })
-//     .then((res2) => {
-//       console.log("res2 success!", res2);
-//       return res2.json();
-//     })
-//     .then((data2) => {
-//       console.log(data2);
-//       let fetchRecipeData = data2;
-//       // createCards(fetchRecipeData, fetchAvocadoData);
-//     })
-//     .catch((e) => {
-//       console.log("ERROR!", e);
-//     });
-// };
-
-// fetchDataFunction();
-
+//#region REQ 1: Dynamic Fetch
 const getDataAsync = async (ingredient) => {
   const loader = document.querySelector(".loader");
   loader.classList.remove("invisible");
@@ -74,23 +42,9 @@ const getDataAsync = async (ingredient) => {
     console.log("error", error);
   }
 };
+//#endregion
 
-const controller = async (ingredient) => {
-  const allData = await getDataAsync(ingredient);
-  console.log(allData);
-  createCards(allData.recipeData, allData.ingData);
-  setEventListener(allData.recipeData, allData.ingData);
-};
-
-controller("avocado");
-createEvent();
-
-//TESTING USING LOCAL DATA
-// createCards(recipeData, avocadoData);
-
-// setEventListener(recipeData, avocadoData);
-// createEvent();
-
+//#region REQ 2: Event that triggers dynamic fetch
 const createEvent = () => {
   let ingredient = "";
 
@@ -106,7 +60,9 @@ const createEvent = () => {
     }
   });
 };
+//#endregion
 
+//#region REQ 3: Combine filters
 function setEventListener(rData, aData) {
   let checkboxes = document.querySelector(".dietContainer");
   let selectedMinutes = document.querySelector(".minutes");
@@ -127,7 +83,9 @@ function setEventListener(rData, aData) {
     });
   });
 }
+//#endregion
 
+//#region REQ 3.1: First filter by diet
 function filterByDiet(rData, aData) {
   let myCheckedBoxes = Array.from(
     document.querySelectorAll("input[type='checkbox']:checked")
@@ -145,7 +103,9 @@ function filterByDiet(rData, aData) {
   createCards(filteredRecipes, aData);
   return filteredRecipes;
 }
+//#endregion
 
+//#region REQ 3.2: Second filter by time
 function filterByMinutes(rData, aData) {
   let filteredMinutes = rData;
   const selectedMinutes = document.querySelector(".minutes").value;
@@ -169,22 +129,9 @@ function filterByMinutes(rData, aData) {
   createCards(filteredMinutes, aData);
   return filteredMinutes;
 }
+//#endregion
 
-// DROPDOWN FILTER (REPLACED WITH CHECKBOXES)
-// function filterByDropDown(rData, aData) {
-//   const dropDownValue = document.querySelector(".tags").value;
-//   let filteredrData = rData.filter((r) => {
-//     return (
-//       dropDownValue === "all" ||
-//       (dropDownValue === "Vegetarian" && r.vegetarian === true) ||
-//       (dropDownValue === "Vegan" && r.vegan === true) ||
-//       (dropDownValue === "Gluten Free" && r.glutenFree === true) ||
-//       (dropDownValue === "Dairy Free" && r.dairyFree === true)
-//     );
-//   });
-//   createCards(filteredrData, aData);
-// }
-
+//#region REQ 4: Display cards
 function createCards(recipeData, avocadoData) {
   const loader = document.querySelector(".loader");
   loader.classList.add("invisible");
@@ -254,8 +201,9 @@ function createCards(recipeData, avocadoData) {
     }
   }
 }
+//#endregion
 
-//#region -Components of a card-
+//#region REQ 4.1: Components of a card
 function createSectionCard() {
   let sectionCard = document.createElement("section");
   sectionCard.classList.add("col-lg-3");
@@ -322,34 +270,6 @@ function createLikes(rData, x) {
   let likes = document.createElement("p");
   likes.innerHTML = rData[x].aggregateLikes + " &#128077;";
   return likes;
-}
-
-function createTagsSwitch(rData) {
-  let tags = document.createElement("p");
-  tags.innerHTML = "Tags: &nbsp";
-  tags.style.fontSize = "small";
-
-  switch (
-    rData[x].vegetarian === false &&
-    rData[x].vegan === false &&
-    rData[x].glutenFree === false &&
-    rData[x].dairyFree === false
-  ) {
-    case rData[x].vegetarian === true:
-      tags.innerHTML += '<img src="./gluten.png" width="25px"> &nbsp';
-    case rData[x].vegan === true:
-      tags.innerHTML +=
-        '<img src="https://cdn-icons.flaticon.com/png/512/5769/premium/5769063.png?token=exp=1650558135~hmac=5bb33e6a6c8d13633f8240903c5a2b05" width="25px"> &nbsp';
-    case rData[x].glutenFree === true:
-      tags.innerHTML +=
-        '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905936.png?token=exp=1652712621~hmac=4b1eee26b4f58c1c361de7175d90367b" width="25px"> &nbsp ';
-    case rData[x].dairyFree === true:
-      tags.innerHTML +=
-        '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905942.png?token=exp=1650557979~hmac=5926bf662a65cfc1e66acbb0b111fd2b" width="25px"> &nbsp';
-    default:
-      tags.innerHTML += "N/A";
-  }
-  return tags;
 }
 
 function createTags(rData) {
@@ -429,4 +349,72 @@ function createHiddenSection(rData) {
   }
   return hiddenSection;
 }
+//#endregion
+
+//#region REQ 5: Controller function
+const controller = async (ingredient) => {
+  const allData = await getDataAsync(ingredient);
+  console.log(allData);
+  createCards(allData.recipeData, allData.ingData);
+  setEventListener(allData.recipeData, allData.ingData);
+};
+
+controller("avocado");
+createEvent();
+//#endregion
+
+//#region other things that were attempted
+// FETCH/THEN - NOT USING ASYNC/AWAIT
+// const url1 =
+//   "https://api.spoonacular.com/recipes/findByIngredients?apiKey=5bb2ba85e71141829b3107f5df442fce&ingredients=avocado&number=100";
+// const url2 =
+//   "https://api.spoonacular.com/recipes/informationBulk?apiKey=5bb2ba85e71141829b3107f5df442fce&ids=633165%2C%20634048%2C%20648439%2C%201697397%2C%201512847%2C%20715543%2C%20633144%2C%20633160%2C%20650751%2C%20664997%2C%20633157%2C%20649335%2C%20664394%2C%20643455%2C%20633123%2C%20660108%2C%20715521%2C%20780000%2C%20640062%2C%20633132%2C%20645479%2C%20800754%2C%20640959%2C%20650789%2C%20654430%2C%20633120%2C%20633264%2C%20642780%2C%20633141%2C%20650471%2C%20673436%2C%20645988%2C%20663054%2C%201160166%2C%20633126%2C%20632788%2C%20633133%2C%20637999%2C%20643428%2C%20650860%2C%20633117%2C%20633119%2C%20637480%2C%20647608%2C%20650809%2C%20646632%2C%20655785%2C%20665178%2C%20715544%2C%20716437%2C%20633139%2C%20662670%2C%20644593%2C%20658495%2C%20651707%2C%20636676%2C%20643861%2C%20982371%2C%20638593%2C%20645687%2C%20656519%2C%20661431%2C%20635074%2C%20661188%2C%20638741%2C%20640311%2C%20157344%2C%20660024%2C%20661126%2C%20642395%2C%20649343%2C%20657679%2C%201096017%2C%20622825%2C%20660494%2C%20653014%2C%20157399%2C%20795751%2C%20645730%2C%20664501%2C%20633166%2C%20661864%2C%20656723%2C%20653200%2C%20663050%2C%20640990%2C%20637102%2C%20646461%2C%20679509%2C%20469862%2C%20715415%2C%20631912%2C%20651585%2C%20662243%2C%20664595%2C%20650377%2C%20639388%2C%20645608%2C%20664429";
+
+// const fetchDataFunction = (url1, url2) => {
+//   fetch(url1)
+//     .then((res1) => {
+//       console.log("res1 success!", res1);
+//       return res1.json();
+//     })
+//     .then((data1) => {
+//       console.log(data1);
+//       let fetchAvocadoData = data1;
+//       return fetch(url2);
+//     })
+//     .then((res2) => {
+//       console.log("res2 success!", res2);
+//       return res2.json();
+//     })
+//     .then((data2) => {
+//       console.log(data2);
+//       let fetchRecipeData = data2;
+//       // createCards(fetchRecipeData, fetchAvocadoData);
+//     })
+//     .catch((e) => {
+//       console.log("ERROR!", e);
+//     });
+// };
+
+// fetchDataFunction();
+
+//TESTING USING LOCAL DATA
+// createCards(recipeData, avocadoData);
+
+// setEventListener(recipeData, avocadoData);
+// createEvent();
+
+// DROPDOWN FILTER (REPLACED WITH CHECKBOXES REQ 3.1)
+// function filterByDropDown(rData, aData) {
+//   const dropDownValue = document.querySelector(".tags").value;
+//   let filteredrData = rData.filter((r) => {
+//     return (
+//       dropDownValue === "all" ||
+//       (dropDownValue === "Vegetarian" && r.vegetarian === true) ||
+//       (dropDownValue === "Vegan" && r.vegan === true) ||
+//       (dropDownValue === "Gluten Free" && r.glutenFree === true) ||
+//       (dropDownValue === "Dairy Free" && r.dairyFree === true)
+//     );
+//   });
+//   createCards(filteredrData, aData);
+// }
 //#endregion
