@@ -11,22 +11,49 @@ h1 {
   color: white;
   font-style: bold;
   -webkit-text-stroke: 1px green;
-}
-
-div.col-12 p {
-  font-weight: 200;
-  color: green;
+  text-align: center;
 }
 
 .navflex {
   display: flex;
   align-items: center;
 }
+
+nav div.row {
+  display: flex;
+  align-items: center;
+}
+
+div.col-12 p {
+  font-weight: 200;
+  color: green;
+  text-align: right;
+  /* align-self: flex-end; */
+}
+
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .dropdownflex {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
+  padding-bottom: 1%;
 }
 
 form {

@@ -14,66 +14,111 @@
 
     <title>Salads Anyway</title>
   </head>
-  <body>
+  
     <nav class="navflex">
-    <a href="#"></a>       
-    <img
-            src="https://cdn.pixabay.com/photo/2018/09/03/11/51/avocado-3651037_960_720.png"
-            alt="avocado-logo"
-            width="300"
-            height="240"
+      <a href="#">
+        <img
+          src="https://cdn.pixabay.com/photo/2018/09/03/11/51/avocado-3651037_960_720.png"
+          alt="avocado-logo"
+          width="400"
+          height="260"
+          class="img-fluid"
+          alt="Responsive image"
+        />
+      </a>
+
+      <div class="row">
+        <div class="col-12 col-md-5">
+          <h1 class="display-4">Salads Anyway</h1>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <p>
+            A good salad brightens the day! That's why we are here to share some
+            ideas with you. Simply search by your favorite ingredient, and get
+            inspired. After all, what makes a salad a salad anyway? &#129300;
+            &#127827; &#127805; &#127793; &#129365;
+          </br>
+          <!-- <form class="form-inline my-2 my-lg-0"> -->
+          <input
+          type="text"
+            class="form-control mr-sm-2"
+            type="search"
+            placeholder="e.g. Avocado"
+            aria-label="Search"
+            id="ing-search"
+            value=""
           />
-        </a>
-   
-    <div class="row">
-      <div class="col-12 col-md-4">
-        <h1 class="display-4">Salads Anyway</h1>
+      
+        <!-- </form> -->
+
+      
+          </p>
+        </div>
       </div>
+    </nav>
 
-      <div class="col-12 col-md-8">
-        <br>
-          A good salad brightens the day! That's why we are here to share some ideas with you. Simply search by your favorite ingredient, and get inspired. After all, what makes a salad a salad anyway? &#129300; &#127827; &#127805; &#127793; &#129365;
-        </p>
-      </div>
-    </div>
-  </nav>
+    
 
-  
+    
 
-<div class="dropdownflex">
-  
-<div class="dietContainer">
-<!-- <div class="form-check form-check-inline">
+  </div>
+
+    <div class="dropdownflex">
+      <div class="dietContainer">
+        <!-- <div class="form-check form-check-inline">
   <input class="form-check-input" type="checkbox" name="diets" id="inlineCheckbox1" value="all" checked="checked">
   <label class="form-check-label active" for="inlineCheckbox1">All</label>
 </div> -->
-<div class="form-check form-check-inline">
-  <input class="form-check-input" type="checkbox" name="diets" id="DairyFree" value="dairy free">
-  <label class="form-check-label" for="inlineCheckbox2">Dairy Free</label>
-</div>
-<div class="form-check form-check-inline">
-  <input class="form-check-input" type="checkbox" name="diets" id="GlutenFree" value="gluten free">
-  <label class="form-check-label" for="inlineCheckbox3">Gluten Free</label>
-</div>
-<div class="form-check form-check-inline">
-  <input class="form-check-input" type="checkbox" name="diets" id="Vegan" value="vegan">
-  <label class="form-check-label" for="inlineCheckbox3">Vegan</label>
-</div>
-<div class="form-check form-check-inline">
-  <input class="form-check-input" type="checkbox" name="diets" id="Vegetarian" value="lacto ovo vegetarian">
-  <label class="form-check-label" for="inlineCheckbox3">Vegetarian</label>
-</div>
-</div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="diets"
+            id="DairyFree"
+            value="dairy free"
+          />
+          <label class="form-check-label" for="inlineCheckbox2"
+            >Dairy Free</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="diets"
+            id="GlutenFree"
+            value="gluten free"
+          />
+          <label class="form-check-label" for="inlineCheckbox3"
+            >Gluten Free</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="diets"
+            id="Vegan"
+            value="vegan"
+          />
+          <label class="form-check-label" for="inlineCheckbox3">Vegan</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="diets"
+            id="Vegetarian"
+            value="lacto ovo vegetarian"
+          />
+          <label class="form-check-label" for="inlineCheckbox3"
+            >Vegetarian</label
+          >
+        </div>
+      </div>
 
-
-<!-- myCheckedBoxes = ["Vegan", "GlutenFree"]
-data.diets = ["vegan", "vegetarian", "glutenFree"]
-
-if (myCheckedBoxes.includes(data.diets[i])){
-  result += recipe
-}  -->
-
-<!-- <div class="dropdown">
+      <!-- <div class="dropdown">
       <select
         name="tags"
         class="btn btn-warning dropdown-toggle my-2 my-sm-0 tags"
@@ -91,65 +136,62 @@ if (myCheckedBoxes.includes(data.diets[i])){
     </select>
 
       </div>  -->
-
+<div class="loader invisible"></div>
       <div class="timeDropdown">
-      <select
-        name="minutes"
-        class="btn btn-warning dropdown-toggle my-2 my-sm-0 minutes"
-        type="button"
-        id="dropdownMenuButton"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-      <option class="dropdown-item" value="all">All</option>  
-      <option class="dropdown-item" value="lessThan30">Ready in 30 minutes</option>
-        <option class="dropdown-item" value="lessThan60">Ready in an hour</option>
-        <option class="dropdown-item" value="lessThan120">Ready in two hours</option>
-    
-    </select>
+        <select
+          name="minutes"
+          class="btn btn-warning dropdown-toggle my-2 my-sm-0 minutes"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <option class="dropdown-item" value="all">Ready in...</option>
+          <option class="dropdown-item" value="lessThan30">
+            Ready in 30 minutes
+          </option>
+          <option class="dropdown-item" value="lessThan60">
+            Ready in an hour
+          </option>
+          <option class="dropdown-item" value="lessThan120">
+            Ready in two hours
+          </option>
+        </select>
+      </div>
 
-      </div> 
-
-
- <div class="col-4 col-lg-6">
-          <div class="input-group mt-2">
-            <!-- <span class="input-group-text" id="basic-addon1"
-              >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-search"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                />
-              </svg>
-            </span> -->
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Search main ingredient..."
-              aria-label="City"
-              aria-describedby="basic-addon1"
-              id="ing-search"
-              value=""
-            />
-          </div>
+      <!-- <div class="col-4 col-lg-6">
+        <div class="input-group mt-2">
+          <span class="input-group-text" id="basic-addon1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-search"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+              />
+            </svg>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search main ingredient..."
+            aria-label="City"
+            aria-describedby="basic-addon1"
+            id="ing-search"
+            value=""
+          />
         </div>
+      </div> -->
+    </div>
 
-  </div>
+    
 
-  <main class ="container-fluid">
-
-
-  </main>
-
-
-
+    <main class="container-fluid"></main>
 
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -166,7 +208,7 @@ if (myCheckedBoxes.includes(data.diets[i])){
       integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
       crossorigin="anonymous"
     ></script>
-    
+
     <script src="avocadoData.js"></script>
     <script src="recipeData.js"></script>
     <script src="main.js"></script>

@@ -41,7 +41,9 @@ main.appendChild(mainContainer);
 // fetchDataFunction();
 
 const getDataAsync = async (ingredient) => {
-  let url1 = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apikey}&includeIngredients=${ingredient}&query=salad&number=8`;
+  const loader = document.querySelector(".loader");
+  loader.classList.remove("invisible");
+  let url1 = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apikey}&includeIngredients=${ingredient}&query=salad&number=20`;
   try {
     let response = await fetch(url1);
     let data = await response.json();
@@ -53,11 +55,15 @@ const getDataAsync = async (ingredient) => {
       ids.push(ingData[i].id);
     }
 
+    let randomids = ids.sort(() => 0.5 - Math.random());
+
+    let selectedids = randomids.slice(0, 8);
+
     // let data2 = [];
     // if (data1) {
     let url2 = `https://api.spoonacular.com/recipes/informationBulk?apiKey=${apikey}&ids=`;
-    for (j = 0; j < ids.length; j++) {
-      url2 += ids[j] + "%2C%20";
+    for (j = 0; j < selectedids.length; j++) {
+      url2 += selectedids[j] + "%2C%20";
     }
     const response2 = await fetch(url2);
     let recipeData = await response2.json();
@@ -69,10 +75,26 @@ const getDataAsync = async (ingredient) => {
   }
 };
 
+const controller = async (ingredient) => {
+  const allData = await getDataAsync(ingredient);
+  console.log(allData);
+  createCards(allData.recipeData, allData.ingData);
+  setEventListener(allData.recipeData, allData.ingData);
+};
+
+controller("avocado");
+createEvent();
+
+//TESTING USING LOCAL DATA
+// createCards(recipeData, avocadoData);
+
+// setEventListener(recipeData, avocadoData);
+// createEvent();
+
 const createEvent = () => {
   let ingredient = "";
 
-  const search = document.getElementById("ing-search");
+  let search = document.getElementById("ing-search");
 
   search.addEventListener("change", (event) => {
     ingredient = event.target.value;
@@ -164,7 +186,15 @@ function filterByMinutes(rData, aData) {
 // }
 
 function createCards(recipeData, avocadoData) {
+  const loader = document.querySelector(".loader");
+  loader.classList.add("invisible");
+
   mainContainer.innerHTML = "";
+
+  let search = document.getElementById("ing-search");
+  search.value = "";
+  // search.setAttribute("placeholder", "Search...");
+
   for (i = 0; i < avocadoData.length; i++) {
     for (x = 0; x < recipeData.length; x++) {
       let identifier = avocadoData[i].id;
@@ -284,7 +314,7 @@ function createIngredient() {
 }
 function createOtherIngredientsText() {
   let otherIngredientsText = document.createElement("p");
-  otherIngredientsText.innerHTML = "Other ingredients:";
+  otherIngredientsText.innerHTML = "You will need:";
   return otherIngredientsText;
 }
 
@@ -306,14 +336,13 @@ function createTagsSwitch(rData) {
     rData[x].dairyFree === false
   ) {
     case rData[x].vegetarian === true:
-      tags.innerHTML +=
-        '<img src="https://cdn-icons.flaticon.com/png/512/3463/premium/3463358.png?token=exp=1650558165~hmac=2f8e03cd7eaf344710a7f9cdde9f7780" width="25px"> &nbsp';
+      tags.innerHTML += '<img src="./gluten.png" width="25px"> &nbsp';
     case rData[x].vegan === true:
       tags.innerHTML +=
         '<img src="https://cdn-icons.flaticon.com/png/512/5769/premium/5769063.png?token=exp=1650558135~hmac=5bb33e6a6c8d13633f8240903c5a2b05" width="25px"> &nbsp';
     case rData[x].glutenFree === true:
       tags.innerHTML +=
-        '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905936.png?token=exp=1650557905~hmac=4ef73e036ef032071907bec917029dad" width="25px"> &nbsp ';
+        '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905936.png?token=exp=1652712621~hmac=4b1eee26b4f58c1c361de7175d90367b" width="25px"> &nbsp ';
     case rData[x].dairyFree === true:
       tags.innerHTML +=
         '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905942.png?token=exp=1650557979~hmac=5926bf662a65cfc1e66acbb0b111fd2b" width="25px"> &nbsp';
@@ -336,20 +365,16 @@ function createTags(rData) {
   ) {
     tags.innerHTML += "N/A";
   } else if (rData[x].vegetarian === true) {
-    tags.innerHTML +=
-      '<img src="https://cdn-icons.flaticon.com/png/512/3463/premium/3463358.png?token=exp=1650558165~hmac=2f8e03cd7eaf344710a7f9cdde9f7780" width="25px"> &nbsp';
+    tags.innerHTML += '<img src="./vegetarian.png" width="25px"> &nbsp';
   }
   if (rData[x].vegan === true) {
-    tags.innerHTML +=
-      '<img src="https://cdn-icons.flaticon.com/png/512/5769/premium/5769063.png?token=exp=1650558135~hmac=5bb33e6a6c8d13633f8240903c5a2b05" width="25px"> &nbsp';
+    tags.innerHTML += '<img src="./vegan.png" width="25px"> &nbsp';
   }
   if (rData[x].glutenFree === true) {
-    tags.innerHTML +=
-      '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905936.png?token=exp=1650557905~hmac=4ef73e036ef032071907bec917029dad" width="25px"> &nbsp ';
+    tags.innerHTML += '<img src="./gluten.png" width="25px"> &nbsp ';
   }
   if (rData[x].dairyFree === true) {
-    tags.innerHTML +=
-      '<img src="https://cdn-icons.flaticon.com/png/512/4905/premium/4905942.png?token=exp=1650557979~hmac=5926bf662a65cfc1e66acbb0b111fd2b" width="25px"> &nbsp';
+    tags.innerHTML += '<img src="./dairy.png" width="25px"> &nbsp';
   }
   return tags;
 }
@@ -405,19 +430,3 @@ function createHiddenSection(rData) {
   return hiddenSection;
 }
 //#endregion
-
-const controller = async (ingredient) => {
-  const allData = await getDataAsync(ingredient);
-  console.log(allData);
-  createCards(allData.recipeData, allData.ingData);
-  setEventListener(allData.recipeData, allData.ingData);
-};
-
-// controller("avocado");
-// createEvent();
-
-//TESTING USING LOCAL DATA
-createCards(recipeData, avocadoData);
-
-setEventListener(recipeData, avocadoData);
-createEvent();
